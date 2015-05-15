@@ -392,7 +392,7 @@ define(function (require) {
                         * Math.PI / 180;
             var color = pointer.color === 'auto' 
                         ? this._getColor(seriesIndex, value)
-                        : pointer.color;
+                        : this._getColorFunc(pointer.color,seriesIndex, value);
             
             var pointShape = new GaugePointerShape({
                 zlevel: this.getZlevelBase(),
@@ -565,6 +565,16 @@ define(function (require) {
             }
             return colorArray[colorArray.length - 1][1];
         },
+		
+		/**
+		 * 自动颜色和自定义
+		 */
+		_getColorFunc: function (color, seriesIndex, value){
+			if(typeof color === 'function')
+				return color.call(this, seriesIndex, value);
+			else
+				return color;
+		},
         
         /**
          * 构建扇形
